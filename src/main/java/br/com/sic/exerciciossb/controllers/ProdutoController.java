@@ -36,12 +36,16 @@ public class ProdutoController {
 	public Iterable<Produto> obterProdutos() {
 		return produtoRepository.findAll();
 	}
-	
+
+	@GetMapping(path = "/nome/{parteNome}")
+	public Iterable<Produto> obterProdutosPorNome(@PathVariable String parteNome) {
+		return produtoRepository.findByNomeContainingIgnoreCase(parteNome);
+	}
+
 	@GetMapping(path = "/pagina/{numeroPagina}/{qtdItens}")
-	public Iterable<Produto> obterProdutosPorPagina(
-			@PathVariable int numeroPagina,
-			@PathVariable int qtdItens) {
-		if (qtdItens >= 5) qtdItens = 5;
+	public Iterable<Produto> obterProdutosPorPagina(@PathVariable int numeroPagina, @PathVariable int qtdItens) {
+		if (qtdItens >= 5)
+			qtdItens = 5;
 		Pageable page = PageRequest.of(numeroPagina, qtdItens);
 		return produtoRepository.findAll(page);
 	}
